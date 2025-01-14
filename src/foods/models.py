@@ -71,4 +71,4 @@ def send_users_food_notification(sender, instance, created, **kwargs):
         async_to_sync(channel_layer.group_send)(NOTIFICATION, event)
 
 
-post_save.connect(send_users_food_notification, User)
+post_save.connect(send_users_food_notification, sender=Food)
