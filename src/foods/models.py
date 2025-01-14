@@ -17,7 +17,8 @@ class Food(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     name = models.CharField(max_length=20)
     short_description = models.CharField(max_length=15)
-    #image = models.ImageField()
+    image = models.ImageField(upload_to="images", default="default.jpg")
+    quantity = models.IntegerField(default=1)
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self): return self.name
