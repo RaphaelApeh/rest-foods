@@ -1,14 +1,24 @@
-from channels.generic.websocket import AsyncWebsocketConsumer
+from channels.generic.websocket import AsyncJsonWebsocketConsumer
 
 
-class NotificationConsumer(AsyncWebsocketConsumer):
+NOTIFICATION = "notification"
+
+class NotificationConsumer(AsyncJsonWebsocketConsumer):
 
     async def connect(self):
         
+        print(self.scope)
+        self.notification_name = NOTIFICATION
+
+        await self.channel_layer.group_add(self.notification_name, self.channel_name)
+
         await self.accept()
 
     async def disconnect(self, code):
-        pass
+        
+        await self.channel_layer.group_discard(self.notification_name, self.channel_name)
+        print("Disconnect with", code)
 
-    async def receive(self, text_data=None, bytes_data=None):
-        pass
+    async def send_notification(self, event):
+        
+        await self.send_json(event["message"])
