@@ -46,11 +46,17 @@ class Order(models.Model):
     food = models.ForeignKey(Food, on_delete=models.SET_NULL, null=True)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     note = models.CharField(max_length=50)
+    items = models.ManyToManyField(Food, related_name="items", blank=True)
+    is_delivered = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True)
 
 
     def __str__(self):
         return f"{self.note[:5]}...."
+
+    @property
+    def get_items_qs(self):
+        return self.items.all()
 
 
 
