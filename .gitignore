@@ -9,6 +9,10 @@ wheels/
 # node
 node_modules/
 
+# image
+media/
+media/images/
+
 # Virtual environments
 .venv
 .env
