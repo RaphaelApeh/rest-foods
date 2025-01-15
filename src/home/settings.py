@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     # internals
     "accounts",
     "foods",
+    "foods.api",
 
 ]
 

@@ -17,7 +17,7 @@ class OrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Order
-        fields = []
+        fields = ['note']
 
 
 class FoodSerializer(serializers.ModelSerializer):
@@ -29,8 +29,7 @@ class FoodSerializer(serializers.ModelSerializer):
 
 class CategorySerializer(serializers.ModelSerializer):
 
-    food = FoodSerializer(many=True, read_only=True)
 
     class Meta:
         model = Category
-        fields = ['name', 'food']
+        fields = ['name']
