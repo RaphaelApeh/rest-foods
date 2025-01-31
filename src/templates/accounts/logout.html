@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form class="max-w-sm mx-auto mt-12 mb-12 bg-white p-12 rounded-xl shadow-xl font-mono" method="post">
+    {% csrf_token %}
+    <h1 class="mb-4 font-bold">Are you sure you want to log out?</h1>
+    <button type="submit" class="text-white bg-red-500 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-800 font-medium rounded-lg text-sm sm:w-full sm:justify-end w-auto px-5 py-2.5 text-center dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-800 hover:shadow-2xl">Logout</button>
+  </form>
+{% endblock %}

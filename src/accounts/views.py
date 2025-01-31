@@ -1,5 +1,13 @@
-from django.views.generic import FormView
 from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import (
+    render,
+    redirect
+)
+from django.views.generic import (
+    FormView,
+    View
+    )
 from django.contrib.auth import (
     login,
     logout,
@@ -28,3 +36,17 @@ class LoginView(FormView):
 
             return super().form_valid(form)
         return self.form_invalid(form)
+    
+
+@method_decorator(login_required, name="dispatch")
+class LogoutView(View):
+
+    def get(self, request, *args, **kwargs):
+
+        return render(request, "accounts/logout.html")
+    
+    
+    def post(self, request, *args, **kwargs):
+        
+        logout(request)
+        return redirect("login")
