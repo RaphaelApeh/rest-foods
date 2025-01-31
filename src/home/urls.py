@@ -20,10 +20,15 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include
 
+from foods.feeds import FoodFeed
+
 urlpatterns = [
     path("admin/", admin.site.urls),
 
     path("", include("foods.urls")),
+
+    path("rss/", FoodFeed()),
+
     path("accounts/", include("accounts.urls")),
     path("api/", include("foods.api.urls")),
 ]

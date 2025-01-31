@@ -1,2 +1,4 @@
-<img align="centre" width=300px height=100px src="https://media.giphy.com/media/TEnXkcsHrP4YedChhA/giphy.gif" />
-<h1 align="centre">🍔Rest Food</h1>
+<h1 align="centre">🍽 <span style="color: red">Rest</span> Food</h1>
+
+
+Rest food is a modern food ordering and delivery platform built with Django, Django Channels, and Django REST Framework.
