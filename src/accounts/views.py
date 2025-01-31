@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import (
@@ -16,10 +17,13 @@ from django.contrib.auth import (
 )
 
 from .forms import (
-    LoginForm
+    LoginForm,
+    RegisterForm
 )
 from .decorator import redirect_login_user
 
+
+User = get_user_model()
 
 @method_decorator(redirect_login_user, name="dispatch")
 class LoginView(FormView):
@@ -33,8 +37,9 @@ class LoginView(FormView):
         user = authenticate(self.request, email=email, password=password)
         if user is not None:
             login(self.request, user)
-
+            messages.success(self.request, "Successfully Logged in.")
             return super().form_valid(form)
+        messages.error(self.request, "Error")
         return self.form_invalid(form)
     
 
@@ -50,3 +55,19 @@ class LogoutView(View):
         
         logout(request)
         return redirect("login")
+    
+
+class SignupView(FormView):
+    template_name = "accounts/signup.html"
+    form_class = RegisterForm
+    success_url = "/"
+
+    def form_valid(self, form):
+        form.save()
+        email = form.cleaned_data["email"]
+        password = form.cleaned_data["password"]
+        user = authenticate(self.request, email=email, password=password)
+        if user is not None:
+            login(self.request, user)
+            return super().form_valid(form)
+        return self.form_invalid(form)
