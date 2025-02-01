@@ -20,7 +20,7 @@ from .forms import (
     LoginForm,
     RegisterForm
 )
-from .decorator import redirect_login_user
+from .decorators import redirect_login_user
 
 
 User = get_user_model()
