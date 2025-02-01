@@ -1,5 +1,6 @@
 from django import forms
 from django.utils.crypto import get_random_string
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth import get_user_model
 
@@ -17,18 +18,25 @@ class LoginForm(forms.Form):
     }))
 
 
-class RegisterForm(forms.Form):
+class RegisterForm(UserCreationForm):
     
-    email = forms.EmailField(label="Email Address", widget=forms.EmailInput(attrs={
-            'class': "w-full shadow-sm border border-gray-200 p-2 text-black rounded-md mb-2 mt-2 focus:ring-red-800",
-            'placeholder': 'Email'
-            })) 
+    class Meta:
+        model = User
+        fields = ["email", 'password1', 'password2']
 
-    password = forms.CharField(label="Password", widget=forms.PasswordInput(attrs={
-            'class': "w-full shadow-sm border border-gray-200 p-2 text-black rounded-md mb-2 mt-2 focus:ring-red-800",
-            'placeholder': 'Password'
-            })) 
-    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget.attrs.update({ "class": "w-full shadow-sm border border-gray-200 p-2 text-black rounded-md mb-2 mt-2 focus:ring-red-800"})
+        self.fields["email"].required = True
+
+    def save(self, commit=True):
+        instance =  super().save(commit=False)
+        instance.username = get_random_string(10)
+        
+        if commit:
+            return instance.save()
+        return instance
     
     def clean_password(self):
         password = self.cleaned_data['password']
@@ -44,11 +52,3 @@ class RegisterForm(forms.Form):
             raise forms.ValidationError("Invalid email or Email already exists.")
         
         return email
-    
-    def save(self):
-        username = get_random_string(10)
-        email = self.cleaned_data["email"]
-        password = self.cleaned_data["password"]
-        user = User.objects.create_user(username=username, email=email, password=password)
-
-        return user
