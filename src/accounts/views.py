@@ -19,7 +19,8 @@ from django.contrib.auth import (
 
 from .forms import (
     LoginForm,
-    RegisterForm
+    RegisterForm,
+    EmailVerificationForm
 )
 from .decorators import redirect_login_user
 
@@ -63,7 +64,7 @@ class LogoutView(View):
 class SignupView(FormView):
     template_name = "accounts/signup.html"
     form_class = RegisterForm
-    success_url = "/"
+    success_url = "/accounts/verify-email/"
 
     def form_valid(self, form):
         form.save()
@@ -76,3 +77,12 @@ class SignupView(FormView):
             return super().form_valid(form)
         messages.error(self.request, 'Something went wrong.')
         return self.form_invalid(form)
+
+
+class EmailVerificationView(FormView):
+    template_name = "accounts/verify.html"
+    form_class = EmailVerificationForm
+    success_url = "/"
+
+    def form_valid(self, form):
+        return super().form_valid(form)

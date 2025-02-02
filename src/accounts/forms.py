@@ -6,14 +6,17 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
+
+CSS_CLASS = "w-full shadow-xs border border-gray-200 text-black p-2 block rounded-md mb-6 mt-2 focus:ring-red-800"
+
 class LoginForm(forms.Form):
 
     email = forms.EmailField(widget=forms.EmailInput(attrs={
-        "class": "w-full shadow-xs border border-gray-200 text-black p-2 block rounded-md mb-6 mt-2 focus:ring-red-800",
+        "class": CSS_CLASS,
         "placeholder": "johndoe@example.com"
     }))
     password = forms.CharField(widget=forms.PasswordInput(attrs={
-        "class": "w-full shadow-sm border border-gray-200 p-2 text-black rounded-md mb-2 mt-2 focus:ring-red-800",
+        "class": CSS_CLASS,
         "placeholder": "********"
     }))
 
@@ -27,8 +30,8 @@ class RegisterForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field in self.fields:
-            self.fields[field].widget.attrs.update({ "class": "w-full shadow-sm border border-gray-200 p-2 text-black rounded-md mb-2 mt-2 focus:ring-red-800"})
-        self.fields["email"].required = True
+            self.fields[field].widget.attrs.update({ "class": CSS_CLASS})
+            self.fields[field].required = True
 
     def save(self, commit=True):
         instance =  super().save(commit=False)
@@ -52,3 +55,11 @@ class RegisterForm(UserCreationForm):
             raise forms.ValidationError("Invalid email or Email already exists.")
         
         return email
+    
+class EmailVerificationForm(forms.Form):
+
+    verification_code = forms.CharField(widget=forms.TextInput(attrs={
+        "class": CSS_CLASS,
+        "placeholder": "Verification Code",
+        "id": "form-input"
+    }))
