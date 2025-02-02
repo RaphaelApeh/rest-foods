@@ -56,6 +56,7 @@ class LogoutView(View):
     def post(self, request, *args, **kwargs):
         
         logout(request)
+        messages.success(self.request, "Logged out successfully.")
         return redirect("login")
     
 @method_decorator(redirect_login_user, name="dispatch")
