@@ -10,6 +10,20 @@ from .consumers import NOTIFICATION
 
 User = settings.AUTH_USER_MODEL
 
+
+class Restaurant(models.Model):
+
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=50, db_index=True)
+    description = models.TextField()
+    image = models.ImageField(upload_to="restaurant")
+    foods = models.ManyToManyField("Food", blank=True)
+    location = models.CharField(max_length=50)
+
+    def __str__(self):
+        return f"{self.user.email} {self.name}"
+    
+
 class Category(models.Model):
     name = models.CharField(max_length=10, db_index=True)
     timestamp = models.DateTimeField(auto_now_add=True)
