@@ -36,7 +36,7 @@ class RegisterForm(UserCreationForm):
     def save(self, commit=True):
         instance =  super().save(commit=False)
         instance.username = get_random_string(10)
-        
+        instance.is_active = False
         if commit:
             return instance.save()
         return instance

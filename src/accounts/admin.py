@@ -5,4 +5,4 @@ from .models import EmailVerification
 
 @admin.register(EmailVerification)
 class EmailVerificationAdmin(admin.ModelAdmin):
-    pass
+    list_display = ["user", "is_verified"]
