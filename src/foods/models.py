@@ -13,7 +13,7 @@ User = settings.AUTH_USER_MODEL
 
 class Restaurant(models.Model):
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=50, db_index=True)
     description = models.TextField()
     image = models.ImageField(upload_to="restaurant")
