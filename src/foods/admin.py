@@ -1,6 +1,11 @@
 from django.contrib import admin
 
-from .models import Category, Food, Order
+from .models import Category, Food, Order, Restaurant
+
+
+@admin.register(Restaurant)
+class RestaurantAdmin(admin.ModelAdmin):
+    ...
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
