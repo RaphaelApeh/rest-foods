@@ -7,7 +7,7 @@ class NotificationConsumer(AsyncJsonWebsocketConsumer):
 
     async def connect(self):
         
-        print(self.scope)
+        
         self.notification_name = NOTIFICATION
 
         await self.channel_layer.group_add(self.notification_name, self.channel_name)

@@ -17,8 +17,8 @@ class Restaurant(models.Model):
     name = models.CharField(max_length=50, db_index=True)
     description = models.TextField()
     image = models.ImageField(upload_to="restaurant")
-    foods = models.ManyToManyField("Food", blank=True)
-    location = models.CharField(max_length=50)
+    foods = models.ManyToManyField("Food", blank=True, related_name="foods")
+    address = models.CharField(max_length=100)
 
     def __str__(self):
         return f"{self.user.email} {self.name}"
@@ -31,15 +31,14 @@ class Category(models.Model):
     def __str__(self):
         return self.name
     
-    @property
-    def get_food_qs(self):
-        return self.food_set.all()
-    
     class Meta:
         verbose_name_plural = "Categories"
     
+
 class Food(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    restaurant = models.ForeignKey(Restaurant, related_name="restaurants", on_delete=models.CASCADE)
     name = models.CharField(max_length=20)
     short_description = models.CharField(max_length=15)
     image = models.ImageField(upload_to="images", default="default.jpg")
@@ -48,30 +47,6 @@ class Food(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self): return self.name
-
-    @property
-    def get_category_name(self):
-        return self.category.name
-    
-    @property
-    def get_order_qs(self):
-        return self.order_set.all()
-
-class Order(models.Model):
-    food = models.ForeignKey(Food, on_delete=models.SET_NULL, null=True)
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    note = models.CharField(max_length=50)
-    items = models.ManyToManyField(Food, related_name="items", blank=True)
-    is_delivered = models.BooleanField(default=False)
-    timestamp = models.DateTimeField(auto_now_add=True)
-
-
-    def __str__(self):
-        return f"{self.note[:5]}...."
-
-    @property
-    def get_items_qs(self):
-        return self.items.all()
 
 
 

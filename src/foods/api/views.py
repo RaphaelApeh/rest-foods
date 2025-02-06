@@ -2,8 +2,8 @@ from rest_framework import generics
 from django_filters import rest_framework as filters
 
 from ..filters import FoodFilterSet
-from ..models import Food
-from ..serializers import FoodSerializer
+from ..models import Food, Restaurant
+from ..serializers import FoodSerializer, RestaurantSerializer
 
 class FoodListView(generics.ListAPIView):
     filter_backends = (filters.DjangoFilterBackend,)
