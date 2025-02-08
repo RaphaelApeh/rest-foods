@@ -25,17 +25,17 @@ class RegisterForm(UserCreationForm):
     
     class Meta:
         model = User
-        fields = ["email", 'password1', 'password2']
+        fields = ["username", "email", 'password1', 'password2']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field in self.fields:
             self.fields[field].widget.attrs.update({ "class": CSS_CLASS})
             self.fields[field].required = True
+            self.fields[field].help_text = None
 
     def save(self, commit=True):
         instance =  super().save(commit=False)
-        instance.username = get_random_string(10)
         instance.is_active = False
         if commit:
             return instance.save()

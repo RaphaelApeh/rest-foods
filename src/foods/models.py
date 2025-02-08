@@ -1,6 +1,7 @@
 from asgiref.sync import async_to_sync
 
 from django.db import models
+from django.utils import timezone
 from django.db.models.signals import post_save
 from django.conf import settings
 
@@ -18,6 +19,7 @@ class Restaurant(models.Model):
     description = models.TextField()
     image = models.ImageField(upload_to="restaurant")
     foods = models.ManyToManyField("Food", blank=True, related_name="foods")
+    timestamp = models.DateTimeField(default=timezone.now)
     address = models.CharField(max_length=100)
 
     def __str__(self):
