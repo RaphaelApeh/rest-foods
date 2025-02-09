@@ -1,8 +1,9 @@
-from rest_framework import generics, permissions
+from rest_framework import generics
 from django_filters import rest_framework as filters
 
 from ..filters import FoodFilterSet, RestaurantFilterSet
 from ..models import Food, Restaurant
+from ..pagination import RestPageNumberPagination
 from ..serializers import FoodSerializer, RestaurantSerializer
 
 
@@ -24,7 +25,8 @@ food_detail_view = FoodDetailView.as_view()
 
 
 class RestaurantListView(generics.ListAPIView):
-    queryset = Restaurant.objects.all()
+    pagination_class = RestPageNumberPagination
+    queryset = Restaurant.objects.select_related("user")
     serializer_class = RestaurantSerializer
     filter_backends = [filters.DjangoFilterBackend]
     filterset_class = RestaurantFilterSet
