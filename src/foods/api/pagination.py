@@ -1,3 +1,4 @@
+from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
 
@@ -13,5 +14,6 @@ class RestPageNumberPagination(PageNumberPagination):
             "next_page": self.get_next_link(),
             "previous_page": self.get_previous_link(),
             "page": self.page.number,
-            "restaurants": data
-        })
+            "restaurants": data,
+            "user": self.request.user.username
+        }, status=status.HTTP_200_OK)

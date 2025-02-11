@@ -3,9 +3,9 @@ from django_filters import rest_framework as filters
 
 from ..filters import FoodFilterSet, RestaurantFilterSet
 from ..models import Food, Restaurant
-from ..pagination import RestPageNumberPagination
 from ..serializers import FoodSerializer, RestaurantSerializer
 
+from .pagination import RestPageNumberPagination
 
 class FoodListView(generics.ListAPIView):
     filter_backends = (filters.DjangoFilterBackend,)
