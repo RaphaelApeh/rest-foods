@@ -1,4 +1,5 @@
 from rest_framework import generics
+
 from django_filters import rest_framework as filters
 
 from ..filters import FoodFilterSet, RestaurantFilterSet

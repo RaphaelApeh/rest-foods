@@ -165,7 +165,8 @@ REST_FRAMEWORK = {
         ],
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.SessionAuthentication"
-    ]
+    ],
+    "EXPECTION_HANDLER": "foods.api.utils.custom_expection_handler"
 }
 
 # Default primary key field type

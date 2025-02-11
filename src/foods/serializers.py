@@ -1,5 +1,4 @@
 from django.contrib.auth import get_user_model
-from django.contrib.humanize.templatetags.humanize import naturalday, naturaltime
 
 from rest_framework import serializers
 
@@ -25,7 +24,8 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ['username', "get_full_name",  'email', "date_joined"]
 
     def get_date_joined(self, obj):
-        return naturaltime(obj.date_joined)
+    
+        return obj.date_joined.strftime("%Y-%m-%d")
 
 class FoodSerializer(serializers.ModelSerializer):
 
@@ -51,4 +51,23 @@ class RestaurantSerializer(serializers.ModelSerializer):
         fields = ["name", "user", "description", "food", "address", "image", "timestamp"]
 
     def get_timestamp(self, obj):
-        return naturalday(obj.timestamp)
+        return obj.timestamp.strftime("%Y-%m-%d")
+    
+    def create(self, validated_data):
+        request = self.context.get("request")
+        assert request is not None
+        assert request.user.is_authenticated is True
+
+        user = validated_data.pop("user")
+        
+        return Restaurant.objects.create(user=user, **validated_data)
+    
+
+    def update(self, instance, validated_data):
+        
+        for name, value in validated_data.items():
+            assert name in self.fields
+            setattr(instance, name, value)
+            instance.save()
+
+        return instance
